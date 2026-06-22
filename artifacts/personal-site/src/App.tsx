@@ -100,8 +100,8 @@ function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
             {[
-              { name: "Dashboard Cheetah", image: cheetahImg, description: "A whole collection of McLarens that will make you drool!" },
-              { name: "300 million dollar shipment", image: shipmentImg, description: "An immaculately designed piece of art that instantly adds 500hp to you vehicle." },
+              { name: "Dashboard Cheetah", image: cheetahImg, description: "An immaculately designed piece of art that instantly adds 500hp to you vehicle." },
+              { name: "300 million dollar shipment", image: shipmentImg, description: "A whole collection of McLarens that will make you drool!" },
               { name: "Hyundai elantra", image: hyundaiImg, description: "An immaculately designed piece of art that instantly adds 500hp to you vehicle." },
             ].map((product, i) => (
               <motion.div
