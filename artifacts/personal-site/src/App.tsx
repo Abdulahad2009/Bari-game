@@ -1,17 +1,9 @@
-import { Switch, Route, Router as WouterRouter } from "wouter";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/not-found";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExplosionsCanvas } from "@/components/ExplosionsCanvas";
 import cheetahImg from "@assets/image_1782095223216.png";
 import shipmentImg from "@assets/image_1782095366735.png";
 import hyundaiImg from "@assets/image_1782095439332.png";
 import bariAudio from "@assets/miguel-miguel_1782096905374.mp3";
-
-const queryClient = new QueryClient();
 
 const buttonTexts = ["Get in Touch", "Say Hello", "Let's Talk", "Reach Out"];
 
@@ -80,12 +72,11 @@ function Home() {
             onClick={closeOverlay}
             className="fixed inset-0 z-50 bg-background flex items-center justify-center cursor-pointer overflow-hidden"
           >
-            <ExplosionsCanvas />
             <motion.h1
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="relative z-10 text-7xl md:text-9xl font-black tracking-tight text-primary select-none"
+              className="text-7xl md:text-9xl font-black tracking-tight text-primary select-none"
             >
               BARI GAME
             </motion.h1>
@@ -210,30 +201,10 @@ function Home() {
   );
 }
 
-function Router() {
-  return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route component={NotFound} />
-    </Switch>
-  );
-}
-
-function App() {
+export default function App() {
   useEffect(() => {
     document.documentElement.classList.add("dark");
   }, []);
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Router />
-        </WouterRouter>
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>
-  );
+  return <Home />;
 }
-
-export default App;
