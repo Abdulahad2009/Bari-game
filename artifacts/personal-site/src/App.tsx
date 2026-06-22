@@ -102,7 +102,7 @@ function Home() {
             {[
               { name: "Dashboard Cheetah", image: cheetahImg, description: "An immaculately designed piece of art that instantly adds 500hp to you vehicle." },
               { name: "300 million dollar shipment", image: shipmentImg, description: "A whole collection of McLarens that will make you drool!" },
-              { name: "Hyundai elantra", image: hyundaiImg, description: "An immaculately designed piece of art that instantly adds 500hp to you vehicle." },
+              { name: "Hyundai elantra", image: hyundaiImg, description: "A Hyundai Elantra is a futuristic road-glider so sharp and efficient it makes an LX570 feel like a luxury tank stuck in slow motion." },
             ].map((product, i) => (
               <motion.div
                 key={i}
