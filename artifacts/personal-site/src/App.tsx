@@ -15,6 +15,7 @@ const buttonTexts = ["Get in Touch", "Say Hello", "Let's Talk", "Reach Out"];
 
 function Home() {
   const [buttonIndex, setButtonIndex] = useState(0);
+  const [overlayOpen, setOverlayOpen] = useState(false);
 
   const handleCycleText = () => {
     setButtonIndex((prev) => (prev + 1) % buttonTexts.length);
@@ -41,6 +42,28 @@ function Home() {
 
   return (
     <div className="min-h-[100dvh] w-full bg-background text-foreground selection:bg-primary/30 font-sans flex flex-col">
+
+      <AnimatePresence>
+        {overlayOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => setOverlayOpen(false)}
+            className="fixed inset-0 z-50 bg-background flex items-center justify-center cursor-pointer"
+          >
+            <motion.h1
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="text-7xl md:text-9xl font-black tracking-tight text-primary select-none"
+            >
+              BARI GAME
+            </motion.h1>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <main className="flex-1 max-w-5xl mx-auto px-6 py-24 flex flex-col items-center w-full space-y-40">
         {/* Hero Section */}
         <section className="flex flex-col items-center text-center space-y-10 mt-12 w-full">
@@ -100,14 +123,30 @@ function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
             {[
-              { name: "Dashboard Cheetah", image: cheetahImg, description: "An immaculately designed piece of art that instantly adds 500hp to you vehicle." },
-              { name: "300 million dollar shipment", image: shipmentImg, description: "A whole collection of McLarens that will make you drool!" },
-              { name: "Hyundai elantra", image: hyundaiImg, description: "A Hyundai Elantra is a futuristic road-glider so sharp and efficient it makes an LX570 feel like a luxury tank stuck in slow motion." },
+              {
+                name: "Dashboard Cheetah",
+                image: cheetahImg,
+                description:
+                  "An immaculately designed piece of art that instantly adds 500hp to you vehicle.",
+              },
+              {
+                name: "300 million dollar shipment",
+                image: shipmentImg,
+                description:
+                  "A whole collection of McLarens that will make you drool!",
+              },
+              {
+                name: "Hyundai elantra",
+                image: hyundaiImg,
+                description:
+                  "A Hyundai Elantra is a futuristic road-glider so sharp and efficient it makes an LX570 feel like a luxury tank stuck in slow motion.",
+              },
             ].map((product, i) => (
               <motion.div
                 key={i}
                 variants={itemVariants}
-                className="group flex flex-col p-5 bg-card rounded-3xl border border-card-border hover:border-primary/50 transition-colors duration-500 cursor-default"
+                onClick={() => setOverlayOpen(true)}
+                className="group flex flex-col p-5 bg-card rounded-3xl border border-card-border hover:border-primary/50 transition-colors duration-500 cursor-pointer"
               >
                 <div className="w-full aspect-[4/3] bg-muted/40 rounded-2xl border border-border/50 flex items-center justify-center overflow-hidden mb-6 group-hover:bg-muted/60 transition-colors duration-500">
                   {product.image ? (
