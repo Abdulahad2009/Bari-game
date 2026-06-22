@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import cheetahImg from "@assets/image_1782095223216.png";
 
 const queryClient = new QueryClient();
 
@@ -95,20 +96,24 @@ function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
             {[
-              "Dashboard Cheetah",
-              "300 million dollar shipment",
-              "Hyundai elantra"
-            ].map((productName, i) => (
+              { name: "Dashboard Cheetah", image: cheetahImg },
+              { name: "300 million dollar shipment", image: null },
+              { name: "Hyundai elantra", image: null },
+            ].map((product, i) => (
               <motion.div 
                 key={i} 
                 variants={itemVariants}
                 className="group flex flex-col p-5 bg-card rounded-3xl border border-card-border hover:border-primary/50 transition-colors duration-500 cursor-default"
               >
                 <div className="w-full aspect-[4/3] bg-muted/40 rounded-2xl border border-border/50 flex items-center justify-center overflow-hidden mb-6 group-hover:bg-muted/60 transition-colors duration-500">
-                  <span className="text-muted-foreground text-sm font-medium tracking-wide">Add your image</span>
+                  {product.image ? (
+                    <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-muted-foreground text-sm font-medium tracking-wide">Add your image</span>
+                  )}
                 </div>
                 <div className="space-y-3 px-1 pb-2">
-                  <h3 className="text-xl font-medium text-white tracking-tight">{productName}</h3>
+                  <h3 className="text-xl font-medium text-white tracking-tight">{product.name}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed font-light">
                     A subtle description of this product goes here, detailing its core value.
                   </p>
