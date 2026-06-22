@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import cheetahImg from "@assets/image_1782095223216.png";
 import shipmentImg from "@assets/image_1782095366735.png";
@@ -16,9 +16,74 @@ const buttonTexts = ["Get in Touch", "Say Hello", "Let's Talk", "Reach Out"];
 function Home() {
   const [buttonIndex, setButtonIndex] = useState(0);
   const [overlayOpen, setOverlayOpen] = useState(false);
+  const audioRef = useRef<AudioContext | null>(null);
+  const oscillatorsRef = useRef<OscillatorNode[]>([]);
+  const gainRef = useRef<GainNode | null>(null);
 
   const handleCycleText = () => {
     setButtonIndex((prev) => (prev + 1) % buttonTexts.length);
+  };
+
+  const playRevealSound = () => {
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    audioRef.current = ctx;
+
+    const masterGain = ctx.createGain();
+    masterGain.connect(ctx.destination);
+    masterGain.gain.setValueAtTime(0.35, ctx.currentTime);
+    gainRef.current = masterGain;
+
+    const freqs = [220, 329.63, 440, 554.37]; // A minor 7th chord
+    const types = ["sawtooth", "sawtooth", "square", "sawtooth"];
+
+    freqs.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      osc.type = types[i] as OscillatorType;
+      osc.frequency.setValueAtTime(freq, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(freq * 2, ctx.currentTime + 0.3);
+
+      const oscGain = ctx.createGain();
+      oscGain.gain.setValueAtTime(0, ctx.currentTime);
+      oscGain.gain.linearRampToValueAtTime(0.25, ctx.currentTime + 0.05);
+      oscGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.5);
+
+      osc.connect(oscGain);
+      oscGain.connect(masterGain);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 2.5);
+      oscillatorsRef.current.push(osc);
+    });
+  };
+
+  const stopSound = () => {
+    if (gainRef.current) {
+      const ctx = audioRef.current;
+      if (ctx) {
+        gainRef.current.gain.cancelScheduledValues(ctx.currentTime);
+        gainRef.current.gain.setValueAtTime(gainRef.current.gain.value, ctx.currentTime);
+        gainRef.current.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+      }
+    }
+    oscillatorsRef.current.forEach((osc) => {
+      try { osc.stop(); } catch {}
+    });
+    oscillatorsRef.current = [];
+    if (audioRef.current) {
+      setTimeout(() => {
+        audioRef.current?.close();
+        audioRef.current = null;
+      }, 200);
+    }
+  };
+
+  const openOverlay = () => {
+    setOverlayOpen(true);
+    playRevealSound();
+  };
+
+  const closeOverlay = () => {
+    setOverlayOpen(false);
+    stopSound();
   };
 
   const containerVariants = {
@@ -50,7 +115,7 @@ function Home() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            onClick={() => setOverlayOpen(false)}
+            onClick={closeOverlay}
             className="fixed inset-0 z-50 bg-background flex items-center justify-center cursor-pointer"
           >
             <motion.h1
@@ -74,7 +139,7 @@ function Home() {
             className="space-y-6 flex flex-col items-center"
           >
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-white max-w-3xl">
-              Designing with intent.
+              F*S.
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed font-light">
               Crafting calm, focused digital experiences. Less noise, more
@@ -145,7 +210,7 @@ function Home() {
               <motion.div
                 key={i}
                 variants={itemVariants}
-                onClick={() => setOverlayOpen(true)}
+                onClick={openOverlay}
                 className="group flex flex-col p-5 bg-card rounded-3xl border border-card-border hover:border-primary/50 transition-colors duration-500 cursor-pointer"
               >
                 <div className="w-full aspect-[4/3] bg-muted/40 rounded-2xl border border-border/50 flex items-center justify-center overflow-hidden mb-6 group-hover:bg-muted/60 transition-colors duration-500">
