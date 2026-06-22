@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import cheetahImg from "@assets/image_1782095223216.png";
 import shipmentImg from "@assets/image_1782095366735.png";
+import hyundaiImg from "@assets/image_1782095439332.png";
 
 const queryClient = new QueryClient();
 
@@ -99,7 +100,7 @@ function Home() {
             {[
               { name: "Dashboard Cheetah", image: cheetahImg },
               { name: "300 million dollar shipment", image: shipmentImg },
-              { name: "Hyundai elantra", image: null },
+              { name: "Hyundai elantra", image: hyundaiImg },
             ].map((product, i) => (
               <motion.div 
                 key={i} 
