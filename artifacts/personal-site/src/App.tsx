@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ExplosionsCanvas } from "@/components/ExplosionsCanvas";
 import cheetahImg from "@assets/image_1782095223216.png";
 import shipmentImg from "@assets/image_1782095366735.png";
 import hyundaiImg from "@assets/image_1782095439332.png";
@@ -78,13 +79,14 @@ function Home() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             onClick={closeOverlay}
-            className="fixed inset-0 z-50 bg-background flex items-center justify-center cursor-pointer"
+            className="fixed inset-0 z-50 bg-background flex items-center justify-center cursor-pointer overflow-hidden"
           >
+            <ExplosionsCanvas />
             <motion.h1
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="text-7xl md:text-9xl font-black tracking-tight text-primary select-none"
+              className="relative z-10 text-7xl md:text-9xl font-black tracking-tight text-primary select-none"
             >
               BARI GAME
             </motion.h1>
@@ -104,7 +106,7 @@ function Home() {
               F*S.
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed font-light">
-              Crafting calm, focused digital experiences. Less noise, more
+              Jab . Less noise, more
               clarity.
             </p>
           </motion.div>
