@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import cheetahImg from "@assets/image_1782095223216.png";
 import shipmentImg from "@assets/image_1782095366735.png";
 import hyundaiImg from "@assets/image_1782095439332.png";
@@ -41,7 +41,7 @@ function Home() {
     stopSound();
   };
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -51,7 +51,7 @@ function Home() {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
