@@ -70,7 +70,6 @@ function Home() {
 
   return (
     <div className="min-h-[100dvh] w-full bg-background text-foreground selection:bg-primary/30 font-sans flex flex-col">
-
       <AnimatePresence>
         {overlayOpen && (
           <motion.div
@@ -106,8 +105,7 @@ function Home() {
               F*S.
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed font-light">
-              Jab . Less noise, more
-              clarity.
+              Jab game itni bhari hojaye keh shipment cancel krni parjaye
             </p>
           </motion.div>
 
