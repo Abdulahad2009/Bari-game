@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import cheetahImg from "@assets/image_1782095223216.png";
 import shipmentImg from "@assets/image_1782095366735.png";
 import hyundaiImg from "@assets/image_1782095439332.png";
+import bariAudio from "@assets/miguel-miguel_1782096905374.mp3";
 
 const queryClient = new QueryClient();
 
@@ -16,63 +17,24 @@ const buttonTexts = ["Get in Touch", "Say Hello", "Let's Talk", "Reach Out"];
 function Home() {
   const [buttonIndex, setButtonIndex] = useState(0);
   const [overlayOpen, setOverlayOpen] = useState(false);
-  const audioRef = useRef<AudioContext | null>(null);
-  const oscillatorsRef = useRef<OscillatorNode[]>([]);
-  const gainRef = useRef<GainNode | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const handleCycleText = () => {
     setButtonIndex((prev) => (prev + 1) % buttonTexts.length);
   };
 
   const playRevealSound = () => {
-    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    audioRef.current = ctx;
-
-    const masterGain = ctx.createGain();
-    masterGain.connect(ctx.destination);
-    masterGain.gain.setValueAtTime(0.35, ctx.currentTime);
-    gainRef.current = masterGain;
-
-    const freqs = [220, 329.63, 440, 554.37]; // A minor 7th chord
-    const types = ["sawtooth", "sawtooth", "square", "sawtooth"];
-
-    freqs.forEach((freq, i) => {
-      const osc = ctx.createOscillator();
-      osc.type = types[i] as OscillatorType;
-      osc.frequency.setValueAtTime(freq, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(freq * 2, ctx.currentTime + 0.3);
-
-      const oscGain = ctx.createGain();
-      oscGain.gain.setValueAtTime(0, ctx.currentTime);
-      oscGain.gain.linearRampToValueAtTime(0.25, ctx.currentTime + 0.05);
-      oscGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.5);
-
-      osc.connect(oscGain);
-      oscGain.connect(masterGain);
-      osc.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + 2.5);
-      oscillatorsRef.current.push(osc);
-    });
+    const audio = new Audio(bariAudio);
+    audioRef.current = audio;
+    audio.play().catch(() => {});
   };
 
   const stopSound = () => {
-    if (gainRef.current) {
-      const ctx = audioRef.current;
-      if (ctx) {
-        gainRef.current.gain.cancelScheduledValues(ctx.currentTime);
-        gainRef.current.gain.setValueAtTime(gainRef.current.gain.value, ctx.currentTime);
-        gainRef.current.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
-      }
-    }
-    oscillatorsRef.current.forEach((osc) => {
-      try { osc.stop(); } catch {}
-    });
-    oscillatorsRef.current = [];
-    if (audioRef.current) {
-      setTimeout(() => {
-        audioRef.current?.close();
-        audioRef.current = null;
-      }, 200);
+    const audio = audioRef.current;
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+      audioRef.current = null;
     }
   };
 
