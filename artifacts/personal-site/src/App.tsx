@@ -11,12 +11,7 @@ import hyundaiImg from "@assets/image_1782095439332.png";
 
 const queryClient = new QueryClient();
 
-const buttonTexts = [
-  "Get in Touch",
-  "Say Hello",
-  "Let's Talk",
-  "Reach Out"
-];
+const buttonTexts = ["Get in Touch", "Say Hello", "Let's Talk", "Reach Out"];
 
 function Home() {
   const [buttonIndex, setButtonIndex] = useState(0);
@@ -30,14 +25,18 @@ function Home() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15
-      }
-    }
+        staggerChildren: 0.15,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
   };
 
   return (
@@ -55,7 +54,8 @@ function Home() {
               Designing with intent.
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed font-light">
-              Crafting calm, focused digital experiences. Less noise, more clarity.
+              Crafting calm, focused digital experiences. Less noise, more
+              clarity.
             </p>
           </motion.div>
 
@@ -85,7 +85,7 @@ function Home() {
         </section>
 
         {/* Products Section */}
-        <motion.section 
+        <motion.section
           className="w-full flex flex-col items-center space-y-16"
           initial="hidden"
           whileInView="visible"
@@ -93,38 +93,47 @@ function Home() {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants}>
-            <h2 className="text-2xl md:text-3xl font-medium text-white tracking-tight">What I've Built</h2>
+            <h2 className="text-2xl md:text-3xl font-medium text-white tracking-tight">
+              What I've Built
+            </h2>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
             {[
-              { name: "Dashboard Cheetah", image: cheetahImg },
-              { name: "300 million dollar shipment", image: shipmentImg },
-              { name: "Hyundai elantra", image: hyundaiImg },
+              { name: "Dashboard Cheetah", image: cheetahImg, description: "A whole collection of McLarens that will make you drool!" },
+              { name: "300 million dollar shipment", image: shipmentImg, description: "An immaculately designed piece of art that instantly adds 500hp to you vehicle." },
+              { name: "Hyundai elantra", image: hyundaiImg, description: "An immaculately designed piece of art that instantly adds 500hp to you vehicle." },
             ].map((product, i) => (
-              <motion.div 
-                key={i} 
+              <motion.div
+                key={i}
                 variants={itemVariants}
                 className="group flex flex-col p-5 bg-card rounded-3xl border border-card-border hover:border-primary/50 transition-colors duration-500 cursor-default"
               >
                 <div className="w-full aspect-[4/3] bg-muted/40 rounded-2xl border border-border/50 flex items-center justify-center overflow-hidden mb-6 group-hover:bg-muted/60 transition-colors duration-500">
                   {product.image ? (
-                    <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
-                    <span className="text-muted-foreground text-sm font-medium tracking-wide">Add your image</span>
+                    <span className="text-muted-foreground text-sm font-medium tracking-wide">
+                      Add your image
+                    </span>
                   )}
                 </div>
                 <div className="space-y-3 px-1 pb-2">
-                  <h3 className="text-xl font-medium text-white tracking-tight">{product.name}</h3>
+                  <h3 className="text-xl font-medium text-white tracking-tight">
+                    {product.name}
+                  </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed font-light">
-                    A subtle description of this product goes here, detailing its core value.
+                    {product.description}
                   </p>
                 </div>
               </motion.div>
             ))}
           </div>
         </motion.section>
-
       </main>
 
       {/* Footer */}
